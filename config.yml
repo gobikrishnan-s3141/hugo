@@ -1,4 +1,4 @@
-baseURL: "https://gobikrishnan_s.org/hugo/" 
+baseURL: "https://gobikrishnan_s.org/hugo" 
 title: Gobikrishnan Subramaniam
 theme: PaperMod
 
@@ -15,7 +15,7 @@ menu:
           weight: 2
 
 params:
-    description: "Graduate in Molecular biology and Biotechnology with a robust background in systems biology, and a passion for cancer research, looking to establish a career in precision medicine to treat complex diseases better."
+    description: "2+ years of experience in cancer research - analysing microarray, bulk and single-cell RNA-seq data from tumour samples. Skilled technician in providing computational support to the group, developing pipelines and troubleshooting analyses."
     author: Gobikrishnan Subramaniam
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"
@@ -41,8 +41,8 @@ params:
     profileMode:
           enabled: true
           title: Gobikrishnan Subramaniam
-          subtitle: "I am a molecular biologist focussing on system biology, comprising of gene networks from complex tumour samples to derive insights about drug resistance and tumour progression. I'm interested in analysing microarray and scRNA-seq datasets from patients."
-          imageUrl: "picture.png"
+          subtitle: "I am a molecular biologist focussing on system biology, comprising of gene networks from patient tumour samples to derive insights about drug resistance and tumour progression. I'm interested in analysing microarray, bulk & scRNA-seq datasets from clinical samples."
+          imageUrl: "picture.jpg"
           imageWidth: 160
           imageHeight: 160
           buttons:
