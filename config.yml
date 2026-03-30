@@ -15,7 +15,7 @@ menu:
           weight: 2
 
 params:
-    description: "2+ years of experience in cancer research - analysing microarray, bulk and single-cell RNA-seq data from tumour samples. Skilled technician in providing computational support to the group, developing pipelines and troubleshooting analyses."
+    description: "personal website"
     author: Gobikrishnan Subramaniam
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"
@@ -41,7 +41,7 @@ params:
     profileMode:
           enabled: true
           title: Gobikrishnan Subramaniam
-          subtitle: "I am a molecular biologist focussing on system biology, comprising of gene networks from patient tumour samples to derive insights about drug resistance and tumour progression. I'm interested in analysing microarray, bulk & scRNA-seq datasets from clinical samples."
+          subtitle: "2+ years of cancer research experience - building scalable, reproducible pipelines to analyse microarray, bulk & Single-cell datasets. Currently, I am focused on benchmarking gene perturbation tools (GenKI, scGen, scTenifoldKnk)"
           imageUrl: "picture.jpg"
           imageWidth: 160
           imageHeight: 160
@@ -50,7 +50,7 @@ params:
         - name: cv
           url: cv.pdf
         - name: Email
-          url: mailto:g.subramaniam@qub.ac.uk
+          url: mailto:gsubramaniam01@qub.ac.uk
         - name: Location
           url: location/
         - name: GitHub
