@@ -22,6 +22,9 @@
 
   <meta name="description" content="{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
   <meta name="author" content="{{ config.extra.author }}">
+  {%- if config.extra.orcid %}
+  <link rel="me" href="{{ config.extra.orcid | safe }}">
+  {%- endif %}
 
   <link rel="icon" href="{{ get_url(path='favicon.ico') }}">
   <link rel="apple-touch-icon" href="{{ get_url(path='apple-touch-icon.png') }}">

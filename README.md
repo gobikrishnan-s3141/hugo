@@ -60,7 +60,7 @@ config.toml              site config
 content/
   _index.md              home page
   readme.md              keyboard shortcuts reference
-  location.md            address
+  publications.md        papers and preprints
   posts/                 blog
 sass/css/custom.scss     font-path fix + overflow guards
 static/js/config.js      keybindings and : commands
