@@ -34,8 +34,10 @@ style = "class"
 # appear (light / dark / system) — without it the control is hidden.
 default_theme = "dark"
 
-accent_color = "#1a6ba8"
-accent_color_dark = "#78b7e8"
+# Duckquill's own palette. The accent also drives the CRT phosphor glow used
+# on the home page, so amber doubles as the retro-monitor colour.
+accent_color = "#ff7800"
+accent_color_dark = "#ffa348"
 
 styles = ["syntax.css"]
 
