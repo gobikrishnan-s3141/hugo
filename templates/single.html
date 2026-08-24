@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} · {{ site.title }}{% endblock title %}
+{% block description %}{% if page.description %}{{ page.description }}{% else %}{{ page.summary }}{% endif %}{% endblock description %}
+{% block og_title %}{{ page.title }}{% endblock og_title %}
+{% block canonical %}{{ page.permalink }}{% endblock canonical %}
+
+{% block main %}
+<article>
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    {% if not page.hidemeta %}
+    <p class="meta">
+      {% if page.authors %}{{ page.authors | join(sep=", ") }}{% endif %}
+      {% if page.date %}<time datetime="{{ page.date_iso }}">{{ page.date }}</time>{% endif %}
+      {% if page.edit_post %}<a href="{{ page.edit_post.url }}">{{ page.edit_post.name }}</a>{% endif %}
+    </p>
+    {% endif %}
+  </header>
+
+  {% if page.toc and page.headings %}
+  <nav class="toc">
+    <p class="toc-title">Contents</p>
+    <ul>
+      {% for heading in page.headings %}{% if heading.level <= 3 %}
+      <li class="lvl-{{ heading.level }}"><a href="#{{ heading.id }}">{{ heading.text }}</a></li>
+      {% endif %}{% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="prose">{{ page.content | safe }}</div>
+
+  {% if page.tag_links %}
+  <p class="tags">
+    {% for tag in page.tag_links %}<a href="{{ tag.url }}">{{ tag.name }}</a>{% endfor %}
+  </p>
+  {% endif %}
+</article>
+{% endblock main %}

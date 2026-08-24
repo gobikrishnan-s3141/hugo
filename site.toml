@@ -1,0 +1,38 @@
+# Site configuration. Everything else lives in content/*.md.
+
+base_url = "https://gobikrishnan-s3141.github.io/hugo/"
+title = "Gobikrishnan Subramaniam"
+author = "Gobikrishnan Subramaniam"
+description = "personal website"
+date_format = "%B %Y"
+
+# Load KaTeX everywhere. Individual pages can opt in or out with `math:` in
+# their front matter.
+math = true
+
+[profile]
+subtitle = "2+ years of cancer research experience - building scalable, reproducible pipelines to analyse microarray, bulk & Single-cell datasets. Currently, I am focused on publishing my previous works and benchmarking gene perturbation tools (GenKI, scTenifoldpy)"
+
+[[menu]]
+name = "Papers"
+url = "/papers/"
+
+[[menu]]
+name = "Blog"
+url = "/posts/"
+
+[[menu]]
+name = "Archive"
+url = "/archive/"
+
+[[social]]
+name = "Email"
+url = "mailto:gsubramaniam01@qub.ac.uk"
+
+[[social]]
+name = "Location"
+url = "/location/"
+
+[[social]]
+name = "GitHub"
+url = "https://github.com/gobikrishnan-s3141"

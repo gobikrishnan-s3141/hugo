@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{% if page %}{{ page.title }}{% else %}Tags{% endif %} · {{ site.title }}{% endblock title %}
+{% block description %}{% if page %}{{ page.description }}{% else %}All tags on {{ site.title }}{% endif %}{% endblock description %}
+{% block canonical %}{% if page %}{{ page.permalink }}{% else %}{{ site.base_url }}{% endif %}{% endblock canonical %}
+
+{% block main %}
+<h1>{% if page %}{{ page.title }}{% else %}Tags{% endif %}</h1>
+{% if page %}{% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}{% endif %}
+
+<ul class="termlist">
+  {% for tag in tags %}
+  <li><a href="{{ tag.url }}">{{ tag.name }}</a> <span class="count">{{ tag.count }}</span></li>
+  {% endfor %}
+</ul>
+{% endblock main %}

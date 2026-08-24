@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ tag.name }} · {{ site.title }}{% endblock title %}
+{% block description %}Everything tagged “{{ tag.name }}” on {{ site.title }}{% endblock description %}
+{% block og_title %}{{ tag.name }}{% endblock og_title %}
+
+{% block main %}
+<h1>{{ tag.name }}</h1>
+<p class="lede">{{ tag.count }} item{% if tag.count != 1 %}s{% endif %}</p>
+
+<ul class="entries">
+  {% for entry in pages %}
+  <li>
+    <a href="{{ url(path=entry.url) }}">{{ entry.title }}</a>
+    {% if entry.date %}<time datetime="{{ entry.date_iso }}">{{ entry.date }}</time>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock main %}
