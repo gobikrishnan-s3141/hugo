@@ -1,48 +1,66 @@
-<!doctype html>
-<html lang="en">
+{#
+  Overrides themes/neovim-theme/templates/base.html.
+
+  The theme hardcodes root-absolute asset paths (/js/..., /css/...), which 404
+  when the site is served from a sub-path like /hugo/. Every URL here goes
+  through get_url() instead. window.BASE_URL is exported for the same reason:
+  static JS cannot be templated, so it reads the prefix at run time.
+#}
+<!DOCTYPE html>
+<html lang="{{ config.default_language }}">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ site.title }}{% endblock title %}</title>
-<meta name="description" content="{% block description %}{{ site.description }}{% endblock description %}">
-{% if site.author %}<meta name="author" content="{{ site.author }}">{% endif %}
-<link rel="canonical" href="{% block canonical %}{{ site.base_url }}{% endblock canonical %}">
-<link rel="icon" href="{{ url(path='/favicon.ico') }}">
-<link rel="apple-touch-icon" href="{{ url(path='/apple-touch-icon.png') }}">
-<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ feed_url }}">
-<link rel="stylesheet" href="{{ url(path='/style.css') }}">
-<meta property="og:site_name" content="{{ site.title }}">
-<meta property="og:title" content="{% block og_title %}{{ site.title }}{% endblock og_title %}">
-<meta property="og:type" content="website">
-{% block head %}{% endblock head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {%- if page and page.title -%}{{ page.title }} · {{ config.extra.blog_name }}
+    {%- elif section and section.title and not section.is_home -%}{{ section.title }} · {{ config.extra.blog_name }}
+    {%- else -%}{{ config.extra.blog_name }}
+    {%- endif -%}
+  </title>
+
+  <meta name="description" content="{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
+  <meta name="author" content="{{ config.extra.author }}">
+
+  <link rel="icon" href="{{ get_url(path='favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ get_url(path='apple-touch-icon.png') }}">
+  {%- if config.generate_feeds %}
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml') }}">
+  {%- endif %}
+
+  <script>window.BASE_URL = "{{ get_url(path='/') }}";</script>
+  <script src="{{ get_url(path='js/index.js') }}" defer></script>
+  <script src="{{ get_url(path='js/prompt.js') }}" defer></script>
+  <script src="{{ get_url(path='js/keyboard.js') }}" defer></script>
+  <script src="{{ get_url(path='js/tab.js') }}" defer></script>
+  <script src="{{ get_url(path='js/commands.js') }}" defer></script>
+  <script src="{{ get_url(path='js/config.js') }}" defer></script>
+
+  <link rel="stylesheet" href="{{ get_url(path='css/base.css') }}">
+  <link rel="stylesheet" href="{{ get_url(path='css/custom.css') }}">
+  {%- if page %}
+  <link rel="stylesheet" href="{{ get_url(path='css/page.css') }}">
+  {%- endif %}
 </head>
-<body>
-<header class="site-header">
-  <a class="brand" href="{{ home_url }}">{{ site.title }}</a>
-  {% if menu %}
-  <nav>
-    {% for item in menu %}<a href="{{ item.url }}">{{ item.name }}</a>{% endfor %}
-  </nav>
-  {% endif %}
-</header>
 
-<main>
-{% block main %}{% endblock main %}
-</main>
-
-<footer class="site-footer">
-  <span>&copy; {{ year }} {% if site.author %}{{ site.author }}{% else %}{{ site.title }}{% endif %}</span>
-  <span><a href="{{ feed_url }}">RSS</a></span>
-</footer>
-
-{% if page %}{% if page.math %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
-  onload="renderMathInElement(document.body, {delimiters: [
-    {left: '\\[', right: '\\]', display: true},
-    {left: '\\(', right: '\\)', display: false}
-  ]});"></script>
-{% endif %}{% endif %}
+<body onkeydown="exec(event)">
+  <main>
+    <div class="files" id="files" tabindex="0">
+      {%- include "components/files.html" -%}
+    </div>
+    <div class="viewer {% if page %}page{% endif %}" id="viewer" tabindex="0">
+      <div class="tab">
+        {%- include "components/tab.html" -%}
+      </div>
+      <div class="content" id="content">
+        {%- block content -%}{%- endblock -%}
+      </div>
+    </div>
+    <div class="prompt" id="terminal">
+      {%- include "components/prompt.html" -%}
+    </div>
+  </main>
 </body>
+
 </html>

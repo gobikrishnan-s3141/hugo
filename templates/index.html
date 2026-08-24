@@ -1,35 +1,10 @@
-{% extends "base.html" %}
-{% block canonical %}{{ site.base_url }}{% endblock canonical %}
+{#
+  Overrides the theme's index.html, which renders content/readme.md as the
+  landing page. Render content/_index.md instead and keep readme.md as its own
+  page in the tree.
+#}
+{%- extends "base.html" -%}
 
-{% block main %}
-<section class="profile">
-  {% if site.profile.image %}
-  <img class="avatar" src="{{ url(path='/' ~ site.profile.image) }}" alt="{{ site.title }}" width="160" height="160">
-  {% endif %}
-  <h1>{{ site.title }}</h1>
-  {% if site.profile.subtitle %}<p class="subtitle">{{ site.profile.subtitle }}</p>{% endif %}
-  {% if social %}
-  <p class="social">
-    {% for item in social %}<a href="{{ item.url }}">{{ item.name }}</a>{% endfor %}
-  </p>
-  {% endif %}
-</section>
-
-{% if page %}{% if page.content %}
-<article class="prose">{{ page.content | safe }}</article>
-{% endif %}{% endif %}
-
-{% if recent %}
-<section class="recent">
-  <h2>Recent</h2>
-  <ul class="entries">
-    {% for entry in recent %}
-    <li>
-      <a href="{{ url(path=entry.url) }}">{{ entry.title }}</a>
-      {% if entry.date %}<time datetime="{{ entry.date_iso }}">{{ entry.date }}</time>{% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-{% endif %}
-{% endblock main %}
+{%- block content -%}
+{{ section.content | safe }}
+{%- endblock content -%}

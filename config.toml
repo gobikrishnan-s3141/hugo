@@ -1,0 +1,30 @@
+# Zola configuration. Everything else lives in content/*.md.
+# Docs: https://www.getzola.org/documentation/getting-started/configuration/
+
+base_url = "https://gobikrishnan-s3141.github.io/hugo"
+title = "Gobikrishnan Subramaniam"
+description = "Cancer research and reproducible bioinformatics pipelines."
+default_language = "en"
+theme = "neovim-theme"
+
+compile_sass = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+[markdown]
+smart_punctuation = false
+bottom_footnotes = true
+insert_anchor_links = "heading"
+
+[markdown.highlighting]
+theme = "catppuccin-mocha"
+style = "inline"
+
+[extra]
+# Shown in the browser tab and as the fallback page title.
+blog_name = "gobikrishnan"
+
+# Rendered into the meta tags of templates/base.html.
+author = "Gobikrishnan Subramaniam"
+email = "gsubramaniam01@qub.ac.uk"
+github = "https://github.com/gobikrishnan-s3141"

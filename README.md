@@ -1,90 +1,90 @@
-# gobikrishnan-s3141.github.io
+# gobikrishnan.dev
 
-Personal site. Markdown in `content/`, a ~1,600-line Rust generator in `src/`,
-static HTML out. No Node, no theme, no build pipeline beyond `cargo`.
+Personal site. [Zola](https://www.getzola.org) + the
+[neovim](https://github.com/Super-Botman/neovim-theme) theme — a keyboard-driven
+file-browser layout styled after the editor.
 
-## The stack
+Content is plain Markdown with TOML front matter. Nothing else.
 
-| Piece | What it is |
-| --- | --- |
-| `src/` | `quill`, the generator: markdown → HTML, RSS, sitemap, dev server |
-| `content/` | Every page, as `.md` with YAML front matter |
-| `templates/` | Seven Tera templates (`base`, `index`, `list`, `single`, `archive`, `terms`, `tag`) |
-| `static/` | `style.css`, CV, favicons, photo — copied verbatim to the site root |
-| `site.toml` | Title, menu, social links, profile blurb |
+## Requirements
 
-Nine direct crates, all of them doing something visible: `pulldown-cmark`
-(markdown), `syntect` (build-time syntax highlighting, so no JavaScript
-highlighter ships), `tera` (templates), `serde` + `serde_yaml_ng` + `toml` +
-`serde_json` (front matter, config, template context), `walkdir`, `chrono`.
-The dev server and the file watcher are plain `std`.
-
-## Daily use
+Zola **0.22.1**, pinned.
 
 ```sh
-cargo run -- serve                    # http://127.0.0.1:1313/hugo/, rebuilds on save
-cargo run -- new posts "Post title"   # scaffolds content/posts/post-title/index.md
-cargo run -- build                    # renders into public/
-cargo run -- publish "new post"       # builds, commits, pushes — CI deploys
+curl -sSL -o zola.tar.gz \
+  https://github.com/getzola/zola/releases/download/v0.22.1/zola-v0.22.1-x86_64-unknown-linux-gnu.tar.gz
+tar xzf zola.tar.gz && mv zola ~/.local/bin/
 ```
 
-Install it once and drop the `cargo run --` prefix:
+> **Do not bump to 0.23.x.** Zola 0.23 replaced Tera 1 with Tera 2, which drops
+> the `self::macro()` call syntax the theme's recursive sidebar tree relies on
+> (`themes/neovim-theme/templates/components/files.html`). 0.22.1 is the last
+> release that builds this theme unmodified. Upgrading means porting that macro
+> to a Tera 2 component first.
+
+Clone with the theme submodule:
 
 ```sh
-cargo install --path .
-quill serve
+git clone --recurse-submodules <repo>
+# already cloned:
+git submodule update --init --recursive
 ```
 
-## Writing a post
+## Writing
 
-`quill new posts "Title"` creates a folder with an `index.md`. Everything the
-post needs — figures, PDFs, data — goes in that same folder and is linked by
-bare filename:
-
-```markdown
----
-title: "Benchmarking scGen"
-date: 2026-08-24
-tags: ["single-cell", "benchmarking"]
-summary: "One paragraph for listings and the RSS feed."
----
-
-![](umap.png)
-[The full results](results.pdf)
+```sh
+zola serve      # http://127.0.0.1:1111, live reload
+zola build      # -> public/
+zola check      # validate links
 ```
 
-Front matter keys, all optional except `title`: `date`, `lastmod`, `tags`,
-`author` (string or list), `summary`, `description`, `draft`, `showToc`,
-`hidemeta`, `math`, `weight`, `layout`, `cover: {image, alt}`,
-`editPost: {Text, URL}`.
+A new post is one file:
 
-## How it maps to URLs
+```sh
+cat > content/posts/my-post.md <<'EOF'
++++
+title = "my post"
+date = 2026-08-24
++++
 
-| File | URL |
-| --- | --- |
-| `content/papers/_index.md` | `/papers/` — section listing |
-| `content/papers/paper1/index.md` | `/papers/paper1/` — bundle, siblings copied alongside |
-| `content/data/data1.md` | `/data/data1/` |
-| `content/location.md` | `/location/` — standalone page, kept out of listings |
+Body goes here.
+EOF
+```
 
-Any directory with an `_index.md` becomes a section, listed and fed
-automatically. Tags generate `/tags/<slug>/` pages without any configuration.
-`layout: archives` and `layout: terms` in front matter pick the archive and tag
-index templates.
+Push to `main` and GitHub Actions deploys it.
+
+## Layout
+
+```
+config.toml              site config
+content/
+  _index.md              home page
+  readme.md              keyboard shortcuts reference
+  location.md            address
+  posts/                 blog
+sass/css/custom.scss     font-path fix + overflow guards
+static/js/config.js      keybindings and : commands
+templates/
+  base.html              overrides the theme's
+  index.html             overrides the theme's
+themes/neovim-theme/     submodule
+```
+
+## Theme overrides
+
+The theme hardcodes root-absolute paths, which 404 when the site is served from
+a sub-path (this one deploys under `/hugo/`). Three files exist purely to fix
+that, and each says so in a header comment:
+
+- `templates/base.html` — routes every asset through `get_url()`, adds per-page
+  `<title>` and meta tags, and exports `window.BASE_URL` for the static JS.
+- `static/js/config.js` — replaces the theme's copy (Zola's `static/` overlays
+  the theme's), so `:help` and `:home` resolve against `window.BASE_URL`.
+- `sass/css/custom.scss` — redeclares the JetBrainsMono `@font-face` with a
+  path relative to the stylesheet instead of the theme's absolute one.
 
 ## Deploying
 
-Pushing to `main` runs `.github/workflows/deploy.yml`: build with cargo, upload
-`public/`, deploy to GitHub Pages. The workflow passes the Pages URL in through
-`QUILL_BASE_URL`, which overrides `base_url` in `site.toml` — that is what makes
-the site work from a sub-path like `/hugo/` without editing anything.
-
-## Tests
-
-```sh
-cargo test
-```
-
-Covers front-matter splitting, date parsing, base-path derivation, heading
-anchors, math that survives underscores, and directory traversal in the dev
-server.
+`.github/workflows/deploy.yml` builds on push to `main` and publishes to GitHub
+Pages, passing the Pages URL via `--base-url` so a repo rename does not break
+asset paths.
