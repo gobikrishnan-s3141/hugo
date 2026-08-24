@@ -1,6 +1,5 @@
 +++
-title = "publications"
-weight = 2
+title = "Publications"
 description = "Papers and preprints by Gobikrishnan Subramaniam."
 +++
 

@@ -5,27 +5,66 @@ base_url = "https://gobikrishnan-s3141.github.io/hugo"
 title = "Gobikrishnan Subramaniam"
 description = "Cancer research and reproducible bioinformatics pipelines."
 default_language = "en"
-theme = "neovim-theme"
+theme = "duckquill"
+author = "Gobikrishnan Subramaniam"
 
 compile_sass = true
+minify_html = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
+build_search_index = false
+
+taxonomies = [{ name = "tags", feed = true }]
 
 [markdown]
-smart_punctuation = false
+smart_punctuation = true
 bottom_footnotes = true
+github_alerts = true
 insert_anchor_links = "heading"
 
+# Duckquill ships a light and a dark palette; give the highlighter one of each
+# so code follows whichever theme the reader picked.
 [markdown.highlighting]
-theme = "catppuccin-mocha"
-style = "inline"
+light_theme = "solarized-light"
+dark_theme = "solarized-dark"
+style = "class"
 
 [extra]
-# Shown in the browser tab and as the fallback page title.
-blog_name = "gobikrishnan"
+# Starting theme. Setting this is also what makes the nav theme switcher
+# appear (light / dark / system) — without it the control is hidden.
+default_theme = "dark"
 
-# Rendered into the meta tags of templates/base.html.
-author = "Gobikrishnan Subramaniam"
-email = "gsubramaniam01@qub.ac.uk"
-github = "https://github.com/gobikrishnan-s3141"
-orcid = "https://orcid.org/0009-0001-4118-7591"
+accent_color = "#1a6ba8"
+accent_color_dark = "#78b7e8"
+
+styles = ["syntax.css"]
+
+show_copy_button = true
+show_reading_time = true
+show_share_button = false
+show_backlinks = false
+
+source_url = "https://github.com/gobikrishnan-s3141/hugo"
+
+[extra.nav]
+show_feed = true
+show_theme_switcher = true
+show_repo = false
+links = [
+    { url = "@/posts/_index.md", name = "Posts" },
+    { url = "@/publications.md", name = "Publications" },
+]
+
+[extra.footer]
+links = [
+    { url = "@/posts/_index.md", name = "Posts" },
+    { url = "@/publications.md", name = "Publications" },
+]
+socials = [
+    { url = "https://orcid.org/0009-0001-4118-7591", name = "ORCID", icon = "%3Csvg role='img' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EORCID%3C/title%3E%3Cpath d='M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z'/%3E%3C/svg%3E" },
+    { url = "https://github.com/gobikrishnan-s3141", name = "GitHub", icon = "%3Csvg role='img' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EGitHub%3C/title%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E" },
+    { url = "mailto:gsubramaniam01@qub.ac.uk", name = "Email", icon = "%3Csvg role='img' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EEmail%3C/title%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E" },
+]
+show_copyright = true
+show_powered_by = false
+show_source = false

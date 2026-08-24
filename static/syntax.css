@@ -1,0 +1,11 @@
+/*
+ * Zola 0.22 emits giallo-light.css and giallo-dark.css for class-based
+ * highlighting, but Duckquill only knows the pre-0.22 config keys
+ * (config.markdown.highlight_code / highlight_theme == "css"), so its head
+ * partial never links either file and code blocks render without colour.
+ *
+ * These imports are relative to this stylesheet, so they resolve correctly
+ * under the /hugo/ sub-path deploy. Loaded via config.toml extra.styles.
+ */
+@import url("giallo-light.css") screen and (prefers-color-scheme: light);
+@import url("giallo-dark.css") screen and (prefers-color-scheme: dark);

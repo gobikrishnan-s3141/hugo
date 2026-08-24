@@ -1,10 +1,10 @@
 # gobikrishnan.dev
 
 Personal site. [Zola](https://www.getzola.org) + the
-[neovim](https://github.com/Super-Botman/neovim-theme) theme — a keyboard-driven
-file-browser layout styled after the editor.
+[Duckquill](https://codeberg.org/daudix/duckquill) theme, with a light/dark/system
+theme switcher.
 
-Content is plain Markdown with TOML front matter. Nothing else.
+Content is plain Markdown with TOML front matter.
 
 ## Requirements
 
@@ -16,11 +16,9 @@ curl -sSL -o zola.tar.gz \
 tar xzf zola.tar.gz && mv zola ~/.local/bin/
 ```
 
-> **Do not bump to 0.23.x.** Zola 0.23 replaced Tera 1 with Tera 2, which drops
-> the `self::macro()` call syntax the theme's recursive sidebar tree relies on
-> (`themes/neovim-theme/templates/components/files.html`). 0.22.1 is the last
-> release that builds this theme unmodified. Upgrading means porting that macro
-> to a Tera 2 component first.
+> **Do not bump to 0.23.x.** Zola 0.23 removed shortcodes and moved to Tera 2.
+> Duckquill uses shortcodes (`templates/shortcodes/`) and is in reduced
+> maintenance mode, so it does not build on 0.23.
 
 Clone with the theme submodule:
 
@@ -43,8 +41,10 @@ A new post is one file:
 ```sh
 cat > content/posts/my-post.md <<'EOF'
 +++
-title = "my post"
+title = "My post"
 date = 2026-08-24
+[taxonomies]
+tags = ["bioinformatics"]
 +++
 
 Body goes here.
@@ -56,32 +56,37 @@ Push to `main` and GitHub Actions deploys it.
 ## Layout
 
 ```
-config.toml              site config
+config.toml              site config, nav, footer, theme switcher
 content/
   _index.md              home page
-  readme.md              keyboard shortcuts reference
   publications.md        papers and preprints
   posts/                 blog
-sass/css/custom.scss     font-path fix + overflow guards
-static/js/config.js      keybindings and : commands
-templates/
-  base.html              overrides the theme's
-  index.html             overrides the theme's
-themes/neovim-theme/     submodule
+static/syntax.css        links Zola's generated highlight themes
+themes/duckquill/        submodule
 ```
 
-## Theme overrides
+## Theme switcher
 
-The theme hardcodes root-absolute paths, which 404 when the site is served from
-a sub-path (this one deploys under `/hugo/`). Three files exist purely to fix
-that, and each says so in a header comment:
+Set by `extra.default_theme` in `config.toml`. Setting it is also what makes the
+switcher appear in the nav — without it the control is hidden. The switcher
+offers light / dark / system and remembers the choice in `localStorage`.
 
-- `templates/base.html` — routes every asset through `get_url()`, adds per-page
-  `<title>` and meta tags, and exports `window.BASE_URL` for the static JS.
-- `static/js/config.js` — replaces the theme's copy (Zola's `static/` overlays
-  the theme's), so `:help` and `:home` resolve against `window.BASE_URL`.
-- `sass/css/custom.scss` — redeclares the JetBrainsMono `@font-face` with a
-  path relative to the stylesheet instead of the theme's absolute one.
+## Known theme gap
+
+Duckquill's `partials/head.html` gates the syntax-highlight stylesheets on
+`config.markdown.highlight_code` and `highlight_theme == "css"` — pre-0.22 Zola
+config keys that no longer exist. The condition is therefore always false and no
+highlight CSS is linked, leaving code blocks colourless.
+
+`static/syntax.css` works around it by importing the `giallo-light.css` and
+`giallo-dark.css` files Zola generates, behind `prefers-color-scheme` media
+queries. It is wired in through `extra.styles`.
+
+Consequence: code blocks follow the **system** colour scheme, not the nav
+switcher. Under the switcher's "system" setting the two agree; under an explicit
+light or dark choice the page chrome changes but code colours do not. This
+matches Duckquill's own intended behaviour, which also keys syntax CSS off
+`prefers-color-scheme`.
 
 ## Deploying
 

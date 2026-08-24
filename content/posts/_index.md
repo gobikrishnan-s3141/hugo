@@ -1,8 +1,9 @@
 +++
-title = "posts"
+title = "Posts"
 sort_by = "date"
-template = "section.html"
-page_template = "page.html"
+template = "article_list.html"
+page_template = "article.html"
+paginate_by = 10
 +++
 
 Notes on bioinformatics, pipelines, and whatever else is on my desk.

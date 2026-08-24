@@ -16,9 +16,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Pinned deliberately. Zola 0.23 moved to Tera 2, which the neovim theme's
-  # recursive tree macro does not compile under. 0.22.1 is the last release
-  # before that break. See README.md before bumping this.
+  # Pinned deliberately. Zola 0.23 removed shortcodes and moved to Tera 2;
+  # Duckquill uses shortcodes and is in reduced maintenance mode, so it does
+  # not build on 0.23. See README.md before bumping this.
   ZOLA_VERSION: "0.22.1"
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # The theme lives in themes/neovim-theme as a submodule.
+          # The theme lives in themes/duckquill as a submodule.
           submodules: recursive
 
       - name: Setup Pages
