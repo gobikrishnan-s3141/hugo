@@ -61,7 +61,8 @@ content/
   _index.md              home page
   publications.md        papers and preprints
   posts/                 blog
-static/syntax.css        links Zola's generated highlight themes
+static/syntax.css        generated; see Syntax highlighting
+scripts/                 syntax stylesheet generator
 themes/duckquill/        submodule
 ```
 
@@ -71,22 +72,34 @@ Set by `extra.default_theme` in `config.toml`. Setting it is also what makes the
 switcher appear in the nav — without it the control is hidden. The switcher
 offers light / dark / system and remembers the choice in `localStorage`.
 
-## Known theme gap
+## Syntax highlighting
 
 Duckquill's `partials/head.html` gates the syntax-highlight stylesheets on
 `config.markdown.highlight_code` and `highlight_theme == "css"` — pre-0.22 Zola
-config keys that no longer exist. The condition is therefore always false and no
-highlight CSS is linked, leaving code blocks colourless.
+config keys that no longer exist. The condition is always false, so the theme
+never links the `giallo-light.css` / `giallo-dark.css` files Zola generates and
+code blocks render without colour.
 
-`static/syntax.css` works around it by importing the `giallo-light.css` and
-`giallo-dark.css` files Zola generates, behind `prefers-color-scheme` media
-queries. It is wired in through `extra.styles`.
+Linking them directly is not enough either: a plain `@import` cannot be scoped
+to a selector, so code would follow `prefers-color-scheme` while the rest of the
+page follows the switcher's `data-theme` attribute.
 
-Consequence: code blocks follow the **system** colour scheme, not the nav
-switcher. Under the switcher's "system" setting the two agree; under an explicit
-light or dark choice the page chrome changes but code colours do not. This
-matches Duckquill's own intended behaviour, which also keys syntax CSS off
-`prefers-color-scheme`.
+`scripts/gen-syntax-css.py` flattens both palettes into `static/syntax.css`:
+
+| Scope | Applies when |
+| --- | --- |
+| unscoped | light, the default |
+| `:root[data-theme="dark"]` | dark chosen in the switcher |
+| `:root:not([data-theme])` + `prefers-color-scheme: dark` | switcher set to system |
+
+Code colours therefore follow the switcher, including its system setting.
+`static/syntax.css` is generated but **committed**, since CI only runs
+`zola build`. Regenerate it after changing the highlight themes in
+`config.toml`:
+
+```sh
+zola build && python3 scripts/gen-syntax-css.py
+```
 
 ## Deploying
 
