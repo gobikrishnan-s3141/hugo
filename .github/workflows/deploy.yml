@@ -10,16 +10,12 @@ permissions:
   pages: write
   id-token: write
 
-# One deployment at a time; never cancel one that is already running.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 env:
-  # Pinned deliberately. Zola 0.23 removed shortcodes and moved to Tera 2;
-  # Duckquill uses shortcodes and is in reduced maintenance mode, so it does
-  # not build on 0.23. See README.md before bumping this.
-  ZOLA_VERSION: "0.22.1"
+  ZOLA_VERSION: "0.23.6"
 
 jobs:
   build:
@@ -27,7 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # The theme lives in themes/duckquill as a submodule.
           submodules: recursive
 
       - name: Setup Pages
@@ -43,7 +38,6 @@ jobs:
           zola --version
 
       - name: Build
-        # The Pages URL is only known at run time, so it overrides config.toml.
         run: zola build --base-url "${{ steps.pages.outputs.base_url }}"
 
       - uses: actions/upload-pages-artifact@v3

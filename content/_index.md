@@ -3,7 +3,6 @@ title = "Home"
 insert_anchor_links = "left"
 +++
 
-{% crt() %}
 ```
     .-------------------------------------------------.
     |  .---------------------------------------------.  |
@@ -34,7 +33,6 @@ insert_anchor_links = "left"
                    ___/            \___
                  __/                    \__
 ```
-{% end %}
 
 # Gobikrishnan Subramaniam
 
