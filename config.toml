@@ -17,7 +17,6 @@ taxonomies = [{ name = "tags", feed = true }]
 smart_punctuation = true
 bottom_footnotes = true
 github_alerts = true
-insert_anchor_links = "heading"
 
 [markdown.highlighting]
 theme = "catppuccin-mocha"
