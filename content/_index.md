@@ -35,7 +35,7 @@ title = "Gobikrishnan Subramaniam"
 
 Computational Cancer researcher working on reproducible bioinformatics pipelines
 
-Three years of experience in analysing microarray, bulk, and single-cell RNA-seq datasets. Currently, working on [TMA-Navigator](https://www.tma-vaigator.org)
+Three years of experience in analysing microarray, bulk, and single-cell RNA-seq datasets. Currently, working on [TMA-Navigator](https://www.tmanavigator.org)
 , a publication on my previous renal cell carcinoma work and a custom benchmarking gene-perturbation pipeline (pythia) - GenKI & scTenifoldpy
 
 ## Elsewhere
